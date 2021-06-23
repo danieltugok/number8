@@ -18,6 +18,8 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
+import Toasted from 'vue-toasted';
+Vue.use(Toasted)
 
 /* eslint-disable no-new */
 new Vue({

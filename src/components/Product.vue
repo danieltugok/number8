@@ -34,14 +34,11 @@
           <p class="old-price">${{productItem['Retail Price']}}</p>
 
           <div class="stock-cart">
-            <p>{{productItem.Stock != 0 ? productItem.Stock : "Out of Stock"}}</p>
+            <p v-if="productItem.Stock != 0">Stock: {{productItem.Stock}}</p>
+            <p v-else class="out-of-stock">Out of Stock</p>
 
-            <b-button class="btn-add-to-cart" variant="success">
-              <router-link 
-                :to="{ name: 'Product', params: { id: productItem.ProductID }}"
-              >
+            <b-button @click="addToCart()" class="btn-add-to-cart" variant="success">
                 Add to Cart
-              </router-link>
             </b-button>  
           </div>
 
@@ -82,7 +79,7 @@ export default {
 
   data () {
     return {
-      productItem: null,
+      productItem: null,     
      
     }
   },
@@ -92,14 +89,18 @@ export default {
   },
 
   methods:{
-
     selectProductItem(){
-      console.log(this.id);
-
       this.productItem = this.productList.find((e) => e.ProductID == this.id);
-      console.log('this.productItem:', this.productItem)
-
     },
+    
+    addToCart(append = false) {
+      this.$toasted.success('Product added successfully', { 
+        theme: "toasted-primary", 
+        position: "top-center", 
+        duration : 4000,
+        fullWidth: true,
+      });
+    }
 
   }
 
@@ -108,7 +109,15 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style>
+  .toasted{
+    font-size: 30px !important;
+    font-family: sans-serif;
+    padding: 27px 20px !important;
+    top: -39px !important;
+  }
+  
+</style>
 <style scoped>
   h1, h2 {
     font-weight: normal;
@@ -120,7 +129,7 @@ export default {
   li {
     display: inline-block;
     margin: 0 10px;
-  }
+  }  
   .product-picture{
     position: relative;
   }
@@ -130,7 +139,8 @@ export default {
     bottom: 10px;
   }
   .stock-cart{
-    margin-top: 30px;
+    margin-top: 230px;
+    text-align: center;
   }
   .btn a{
     font-weight: bold;
@@ -155,6 +165,9 @@ export default {
   .product-name{
     font-size: 40px;
     margin-bottom: 10px;
+  }
+  .out-of-stock{
+    color: red;
   }
   .rating-star{
     margin-bottom: 35px;
